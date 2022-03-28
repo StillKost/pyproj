@@ -1,3 +1,6 @@
+import uuid
+from datetime import date
+import csv
 import matplotlib.pyplot as plt
 import math
 import numpy
@@ -83,7 +86,7 @@ def run(X, Y, N, K):
     model = "Y = "
     for i in range(0, K):
         _B = numpy.array(B)[i]
-        model += str(_B) + "X * " + str(i)
+        model += str(_B) + "X" + str(i)
         if i != K - 1:
             model += " + "
 
@@ -103,3 +106,11 @@ def plot(data, title="Plot"):
     plt.rcParams["figure.autolayout"] = True
     plt.plot(data)
     plt.show()
+
+def export(header, data):
+    with open(uuid.uuid4().hex + '.csv', 'w', encoding='UTF8') as f:
+        writer = csv.writer(f, delimiter=";")
+        writer.writerow(header)
+        for item in data:
+            data = item.values()
+            writer.writerow(data)
