@@ -61,7 +61,7 @@ def run(X, Y, N, K):
         D = T * math.sqrt(DAD * numpy.array(G)[i][i])
         _B = numpy.array(B)[i]
         res = "значим" if D > _B else "не значим"
-        RESULT["D" + str(i)] = D
+        RESULT["D" + str(i)] = str(D) + ' - ' + res
 
     model = "Y = "
     for i in range(0, K):

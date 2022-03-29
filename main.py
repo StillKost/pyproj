@@ -35,11 +35,13 @@ result1 = core.run(X, Y, N, K)
 core.printDic(result1)
 plotRes(result1)
 
-#X = numpy.hstack((X[:,0], X[:,1], X[:,3]))
+X = numpy.hstack((X[:,0], X[:,3], X[:,4], X[:,6]))
+N = len(X)
+K = len(X.transpose())
 
-#result2 = core.run(X, Y, 20, 3)
-#core.printDic(result2)
-#plotRes(result2)
+result2 = core.run(X, Y, N, K)
+core.printDic(result2)
+plotRes(result2)
 
 #header = ["Model", "FR", "F", "CORR", "T", "R", "Ra", "AE", "RE"]
 #core.export(header, [result1, result2])
