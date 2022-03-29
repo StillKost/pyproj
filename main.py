@@ -1,4 +1,3 @@
-import matplotlib.pyplot as plt
 import core
 import pandas
 import numpy
@@ -23,25 +22,27 @@ while not pathX:
     pathY = input("Укажите путь в файлу Y: ")
 
 # читаю файлы
-Xfile = pandas.read_excel(pathX, header=None)
-Yfile = pandas.read_excel(pathY, header=None)
+Xfile = pandas.read_excel(pathX, header=None, dtype=float)
+Yfile = pandas.read_excel(pathY, header=None, dtype=float)
 
 # делаю из них матрицы
 X = numpy.matrix(numpy.array(Xfile))
 Y = numpy.matrix(numpy.array(Yfile))
 
-result1 = core.run(X, Y, 20, 5)
-#core.printDic(result1)
-#plotRes(result1)
+N = len(X)
+K = len(X.transpose())
+result1 = core.run(X, Y, N, K)
+core.printDic(result1)
+plotRes(result1)
 
-X = numpy.hstack((X[:,0], X[:,1], X[:,3]))
+#X = numpy.hstack((X[:,0], X[:,1], X[:,3]))
 
-result2 = core.run(X, Y, 20, 3)
+#result2 = core.run(X, Y, 20, 3)
 #core.printDic(result2)
 #plotRes(result2)
 
-header = ["Model", "FR", "F", "CORR", "T", "R", "Ra", "AE", "RE"]
-core.export(header, [result1, result2])
+#header = ["Model", "FR", "F", "CORR", "T", "R", "Ra", "AE", "RE"]
+#core.export(header, [result1, result2])
 
 print("End...")
 

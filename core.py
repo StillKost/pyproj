@@ -1,11 +1,9 @@
 import uuid
-from datetime import date
 import csv
 import matplotlib.pyplot as plt
 import math
 import numpy
 import scipy.stats
-import pandas
 
 def run(X, Y, N, K):
     RESULT = {
@@ -13,46 +11,34 @@ def run(X, Y, N, K):
         "Y": Y
     }
 
-    #print("X = \r\n", X)
-    #print("Y = \r\n", Y)
     # коэфициенты регрессии
-    B = numpy.matrix(((numpy.transpose(X) * X) ** -1) * numpy.transpose(X) * Y)
-    #print("B = \r\n", B)
+    rr = (((numpy.transpose(X) * X)) * numpy.transpose(X) * Y)
+    B = (((numpy.transpose(X) * X) ** -1) * numpy.transpose(X) * Y)
 
     RESULT["B"] = B
 
     # расчетные значения зависимой переменно
     YR = numpy.matrix(X * B)
-    #print("YR = \r\n", YR)
-
     RESULT["YR"] = YR
 
-    # plot(numpy.hstack((Y, YR)))
 
     tmp = numpy.square(Y - YR)
     DAD = sum(tmp) / (N - K)
-    #print("DAD = \r\n", DAD)
 
     RESULT["DAD"] = DAD
 
     YSR = sum(Y) / N
-    #print("YSR = \r\n", YSR)
 
     RESULT["YSR"] = YSR
 
     DY = sum(numpy.square(Y - YSR)) / N - 1
-    #print("DY = \r\n", DY)
 
     RESULT["DY"] = DY
 
     FR = DY / DAD
-    #print("FR = \r\n", FR)
-
     RESULT["FR"] = FR
 
     F = scipy.stats.f.ppf(q=1-0.05, dfn =  N - 1, dfd = N- K)
-    #print("F = \r\n", F)
-
     RESULT["F"] = F
 
     #if FR > F:
@@ -64,24 +50,19 @@ def run(X, Y, N, K):
 
     # не работает почему то
     CORR = scipy.stats.pearsonr(numpy.asarray(Y).reshape(-1), numpy.asarray(YR).reshape(-1))
-    #print("CORR = \r\n", CORR[0])
 
     RESULT["CORR"] = CORR[0]
 
     T = scipy.stats.t.ppf(0.975, N - K)
-    #print("T = \r\n", T)
 
     RESULT["T"] = T
 
     G = (numpy.transpose(X) * X) ** - 1
-    #print("G = \r\n", G)
-    RESULT["G"] = G
 
     for i in range(0, K):
         D = T * math.sqrt(DAD * numpy.array(G)[i][i])
         _B = numpy.array(B)[i]
         res = "значим" if D > _B else "не значим"
-        #print("D" + str(i) + " = \r\n", D, " " + res)
         RESULT["D" + str(i)] = D
 
     model = "Y = "
@@ -96,7 +77,6 @@ def run(X, Y, N, K):
     # ошибка прогоноза
     D = X * ((X.transpose() * X) ** (-1)) * X.transpose()
     D = numpy.array(D)
-    #RESULT["D"] = D
 
     # доверительный интервал
     S = [0 for x in range(N)]
