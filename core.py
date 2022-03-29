@@ -12,15 +12,13 @@ def run(X, Y, N, K):
     }
 
     # коэфициенты регрессии
-    rr = (((numpy.transpose(X) * X)) * numpy.transpose(X) * Y)
     B = (((numpy.transpose(X) * X) ** -1) * numpy.transpose(X) * Y)
-
+    
     RESULT["B"] = B
 
     # расчетные значения зависимой переменно
     YR = numpy.matrix(X * B)
     RESULT["YR"] = YR
-
 
     tmp = numpy.square(Y - YR)
     DAD = sum(tmp) / (N - K)
