@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import math
 import numpy
 import scipy.stats
+import pandas
 
 def run(X, Y, N, K):
     RESULT = {
@@ -62,10 +63,10 @@ def run(X, Y, N, K):
     RESULT["FR > F"] = FR > F
 
     # не работает почему то
-    #CORR = scipy.stats.pearsonr(Y, YR)
+    CORR = scipy.stats.pearsonr(numpy.asarray(Y).reshape(-1), numpy.asarray(YR).reshape(-1))
     #print("CORR = \r\n", CORR[0])
 
-    #RESULT["CORR"] = CORR[0]
+    RESULT["CORR"] = CORR[0]
 
     T = scipy.stats.t.ppf(0.975, N - K)
     #print("T = \r\n", T)
@@ -92,9 +93,27 @@ def run(X, Y, N, K):
 
     RESULT["Model"] = model
 
+    # ошибка прогоноза
+    D = X * ((X.transpose() * X) ** (-1)) * X.transpose()
+    D = numpy.array(D)
+    #RESULT["D"] = D
+
+    # доверительный интервал
+    S = [0 for x in range(N)]
+    for i in range(0, N):
+        s = T * math.sqrt(DAD * (1 + D[i][i]))
+        S[i] = s
+
+    RESULT["S"] = S
+
+    YRmax = numpy.array(YR) + numpy.array(S)
+    YRmin = numpy.array(YR) - numpy.array(S)
+
+    RESULT["YRmax"] = numpy.array(YRmax[0])
+    RESULT["YRmin"] = numpy.array(YRmin[0])
+
+
     return RESULT
-
-
 
 def printDic(dic):
     for key in dic:
@@ -105,6 +124,7 @@ def plot(data, title="Plot"):
     plt.rcParams["figure.figsize"] = [7.50, 3.50]
     plt.rcParams["figure.autolayout"] = True
     plt.plot(data)
+    plt.legend(data.columns.values)
     plt.show()
 
 def export(header, data):
