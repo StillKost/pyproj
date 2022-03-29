@@ -13,11 +13,11 @@ def plotRes(res):
 #E:\x.xlsx
 #E:\y.xlsx
 
-pathX = r"E:\pyproj\Data\x.xlsx" #input("Укажите путь в файлу X: ")
+pathX = r"E:\pyproj\Data\backup\X.xlsx" #input("Укажите путь в файлу X: ")
 while not pathX:
     pathX = input("Укажите путь в файлу X: ")
 
-pathY = r"E:\pyproj\Data\y.xlsx" #input("Укажите путь в файлу Y: ")
+pathY = r"E:\pyproj\Data\backup\Y.xlsx" #input("Укажите путь в файлу Y: ")
 while not pathX:
     pathY = input("Укажите путь в файлу Y: ")
 

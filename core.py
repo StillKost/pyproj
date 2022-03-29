@@ -13,7 +13,7 @@ def run(X, Y, N, K):
 
     # коэфициенты регрессии
     B = (((numpy.transpose(X) * X) ** -1) * numpy.transpose(X) * Y)
-    
+
     RESULT["B"] = B
 
     # расчетные значения зависимой переменно
