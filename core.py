@@ -112,6 +112,11 @@ def run(X, Y, N, K):
     RESULT["YRmax"] = numpy.array(YRmax[0])
     RESULT["YRmin"] = numpy.array(YRmin[0])
 
+    R = (sum(Y - YR) ** 2) / (sum(Y - YSR) ** 2)
+    RESULT["R"] = R
+
+    Ra = 1 - (1 - R ** 2) * ((N - 1)/(N - K))
+    RESULT["Ra"] = Ra
 
     return RESULT
 
@@ -132,5 +137,10 @@ def export(header, data):
         writer = csv.writer(f, delimiter=";")
         writer.writerow(header)
         for item in data:
-            data = item.values()
-            writer.writerow(data)
+            d = []
+            for key in header:
+                try:
+                    d.append(item[key])
+                except:
+                    d.append("undef")
+            writer.writerow(d)

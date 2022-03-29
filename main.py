@@ -32,15 +32,16 @@ Y = numpy.matrix(numpy.array(Yfile))
 
 result1 = core.run(X, Y, 20, 5)
 #core.printDic(result1)
-plotRes(result1)
+#plotRes(result1)
 
 X = numpy.hstack((X[:,0], X[:,1], X[:,3]))
 
 result2 = core.run(X, Y, 20, 3)
 #core.printDic(result2)
-plotRes(result2)
+#plotRes(result2)
 
-core.export(result1.keys(), [result1, result2])
+header = ["Model", "FR", "F", "CORR", "T", "R", "Ra", "AE", "RE"]
+core.export(header, [result1, result2])
 
 print("End...")
 
