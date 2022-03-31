@@ -8,16 +8,16 @@ def plotRes(res):
     df = pandas.DataFrame({"Y": y, "YR": yr})
     df.columns = ["Y", "YR"]
     core.plot(df)
-    core.plot(pandas.DataFrame({"YRmin": res["YRmin"], "YRmax": res["YRmax"], "Y": y, "YR": yr}))
+    core.plot(pandas.DataFrame({"YRmin": numpy.asarray(res["YRmin"]).reshape(-1), "YRmax": numpy.asarray(res["YRmax"]).reshape(-1), "Y": y, "YR": yr}))
 
 #E:\x.xlsx
 #E:\y.xlsx
 
-pathX = r"E:\pyproj\Data\backup\X.xlsx" #input("Укажите путь в файлу X: ")
+pathX = r"E:\pyproj\Data\old_x.xlsx" #input("Укажите путь в файлу X: ")
 while not pathX:
     pathX = input("Укажите путь в файлу X: ")
 
-pathY = r"E:\pyproj\Data\backup\Y.xlsx" #input("Укажите путь в файлу Y: ")
+pathY = r"E:\pyproj\Data\old_y.xlsx" #input("Укажите путь в файлу Y: ")
 while not pathX:
     pathY = input("Укажите путь в файлу Y: ")
 
@@ -35,13 +35,16 @@ result1 = core.run(X, Y, N, K)
 core.printDic(result1)
 plotRes(result1)
 
+# прогноз
+XP = pandas.read_excel(r"E:\pyproj\Data\backup\Xp.xlsx")
+
 X = numpy.hstack((X[:,0], X[:,3], X[:,4], X[:,6]))
 N = len(X)
 K = len(X.transpose())
 
-result2 = core.run(X, Y, N, K)
-core.printDic(result2)
-plotRes(result2)
+#result2 = core.run(X, Y, N, K)
+#core.printDic(result2)
+#plotRes(result2)
 
 #header = ["Model", "FR", "F", "CORR", "T", "R", "Ra", "AE", "RE"]
 #core.export(header, [result1, result2])

@@ -84,11 +84,11 @@ def run(X, Y, N, K):
 
     RESULT["S"] = S
 
-    YRmax = numpy.array(YR) + numpy.array(S)
-    YRmin = numpy.array(YR) - numpy.array(S)
+    YRmax = (YR) + (S)
+    YRmin = (YR) - (S)
 
-    RESULT["YRmax"] = numpy.array(YRmax[0])
-    RESULT["YRmin"] = numpy.array(YRmin[0])
+    RESULT["YRmax"] = (YRmax[:,0])
+    RESULT["YRmin"] = (YRmin[:,0])
 
     R = (sum(Y - YR) ** 2) / (sum(Y - YSR) ** 2)
     RESULT["R"] = R
@@ -96,6 +96,8 @@ def run(X, Y, N, K):
     Ra = 1 - (1 - R ** 2) * ((N - 1)/(N - K))
     RESULT["Ra"] = Ra
 
+    TR = abs(CORR[0]) * numpy.sqrt((N - K)/(1-CORR[0] ** 2))
+    RESULT["TR"] = TR
     return RESULT
 
 def printDic(dic):
@@ -122,3 +124,8 @@ def export(header, data):
                 except:
                     d.append("undef")
             writer.writerow(d)
+
+def forecast(B, data):
+    res = []
+
+
