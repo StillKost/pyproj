@@ -36,18 +36,25 @@ core.printDic(result1)
 plotRes(result1)
 
 # прогноз
-XP = pandas.read_excel(r"E:\pyproj\Data\backup\Xp.xlsx")
+#XP = pandas.read_excel(r"E:\pyproj\Data\backup\Xp.xlsx")
 
-X = numpy.hstack((X[:,0], X[:,3], X[:,4], X[:,6]))
+X = numpy.hstack((X[:,0], X[:,1], X[:,3]))
+N = len(X)
+K = len(X.transpose())
+result2 = core.run(X, Y, N, K)
+core.printDic(result2)
+plotRes(result2)
+
+X = numpy.hstack((X[:,0], X[:,1], X[:,2], numpy.array(X[:,1]) ** 2, numpy.array(X[:,2]) ** 2, numpy.array(X[:,2]) * numpy.array(X[:,1])))
 N = len(X)
 K = len(X.transpose())
 
-#result2 = core.run(X, Y, N, K)
-#core.printDic(result2)
-#plotRes(result2)
+result3 = core.run(X, Y, N, K)
+core.printDic(result3)
+plotRes(result3)
 
-#header = ["Model", "FR", "F", "CORR", "T", "R", "Ra", "AE", "RE"]
-#core.export(header, [result1, result2])
+header = ["Model", "FR", "F", "CORR", "T", "R", "Ra", "AE", "RE"]
+core.export(header, [result1, result2])
 
 print("End...")
 

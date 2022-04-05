@@ -100,6 +100,9 @@ def run(X, Y, N, K):
     RESULT["TR"] = TR
     return RESULT
 
+#def run_sklearn():
+
+
 def printDic(dic):
     for key in dic:
         print("%s -> %s" % (key, dic[key]))
