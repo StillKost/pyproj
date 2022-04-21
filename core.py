@@ -1,3 +1,7 @@
+from sklearn.metrics import matthews_corrcoef
+from sklearn.feature_selection import f_regression, mutual_info_regression
+from sklearn import linear_model
+
 import uuid
 import csv
 import matplotlib.pyplot as plt
@@ -39,10 +43,10 @@ def run(X, Y, N, K):
     F = scipy.stats.f.ppf(q=1-0.05, dfn =  N - 1, dfd = N- K)
     RESULT["F"] = F
 
-    #if FR > F:
-    #    print("Уравнвнение адекватно")
-    #else:
-    #    print("Уравнвнение не адекватно")
+    if FR > F:
+        print("Уравнвнение адекватно")
+    else:
+        print("Уравнвнение не адекватно")
 
     RESULT["FR > F"] = FR > F
 
@@ -100,12 +104,43 @@ def run(X, Y, N, K):
     RESULT["TR"] = TR
     return RESULT
 
-#def run_sklearn():
+def run_sklearn(X, Y, N):
+    numpy.seterr(divide='ignore', invalid='ignore')
+    reg = linear_model.LinearRegression()
 
+    m = reg.fit(X, Y)
+
+    print("N = ", N)
+    print("K = ", reg.n_features_in_)
+
+    # если есть фиктивный столбец то B0 = 0 всегда ???
+    B =  numpy.transpose(reg.coef_) #(((numpy.transpose(X) * X) ** -1) * numpy.transpose(X) * Y)
+
+    print("B = ", B)
+
+    F = scipy.stats.f.ppf(q=1 - 0.05, dfn= N - 1, dfd= N - reg.n_features_in_)
+    print("F = ", F)
+
+    Rsq = m.score(X, Y)
+    print("Rsq = ", Rsq)
+
+    f_test = (Rsq / (1 - Rsq)) * ((N - reg.n_features_in_ - 1) / reg.n_features_in_)
+    print("f_test = ", f_test)
+
+    YR = (X * numpy.matrix(reg.coef_).transpose())
+
+    CORR = scipy.stats.pearsonr(numpy.asarray(Y).reshape(-1), numpy.asarray(YR).reshape(-1))
+    print("CORR = ", CORR[0])
+
+    if f_test > F:
+        print("Уравнвнение адекватно")
+    else:
+        print("Уравнвнение не адекватно")
 
 def printDic(dic):
     for key in dic:
-        print("%s -> %s" % (key, dic[key]))
+        if key not in ["X", "Y", "S"]:
+            print("%s -> %s" % (key, dic[key]))
 
 def plot(data, title="Plot"):
     plt.title = title
